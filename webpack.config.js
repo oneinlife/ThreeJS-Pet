@@ -10,8 +10,7 @@ const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const entry = './src/js/app.js';
 const includePath = path.join(__dirname, 'src/js');
 const nodeModulesPath = path.join(__dirname, 'node_modules');
-
-let outputPath = path.join(__dirname, 'src/build/js');
+const outputPath = path.join(__dirname, `/build/js`);
 
 module.exports = env => {
   // Dev environment
@@ -124,7 +123,7 @@ module.exports = env => {
     devtool,
 
     devServer: {
-      contentBase: 'src/public'
+      contentBase: 'build'
     },
 
     plugins: plugins.concat(

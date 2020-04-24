@@ -4,7 +4,7 @@ var express = require('express'),
 
 app.set('port', (process.env.PORT || 8080));
 
-app.use(express.static('src/public'));
+app.use(express.static('build'));
 
 app.listen(app.get('port'), function(err) {
   if (err) {

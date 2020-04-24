@@ -3,7 +3,7 @@ import Detector from './utils/detector';
 import Main from './app/main';
 
 // Styles
-import './../css/app.scss';
+import '../css/app.scss';
 
 // Check environment and set the Config helper
 if(__ENV__ === 'dev') {

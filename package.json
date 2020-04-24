@@ -13,7 +13,7 @@
     "webpack-server": "webpack-dev-server --env.NODE_ENV=dev --progress --color --open --hot",
     "webpack-watch": "webpack --env.NODE_ENV=dev --progress --color --watch --hot",
     "dev:js": "webpack --env.NODE_ENV=dev",
-    "build:dir": "copyfiles -a -u 2 src/public/assets/**/*.* build/",
+    "build:dir": "copyfiles -a -u 2 src/assets/**/*.* build/assets & copyfiles -a -u 2 src/devScripts/**/*.* build/js",
     "build:js": "webpack --env.NODE_ENV=prod --progress --color"
   },
   "dependencies": {
