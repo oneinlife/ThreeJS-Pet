@@ -22,7 +22,7 @@ import Interaction from './managers/interaction';
 import DatGUI from './managers/datGUI';
 
 // data
-import Config from './../data/config';
+import Config from '../data/config';
 // -- End of imports
 
 // This class instantiates and ties all of the components together, starts the loading process and renders the main loop

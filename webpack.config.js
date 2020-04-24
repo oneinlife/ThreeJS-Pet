@@ -7,8 +7,7 @@ const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
 // Paths
-const entry = './src/js/app.js';
-const includePath = path.join(__dirname, 'src/js');
+const includePath = path.join(__dirname, 'src');
 const nodeModulesPath = path.join(__dirname, 'node_modules');
 const outputPath = path.join(__dirname, `/build/js`);
 
@@ -17,7 +16,7 @@ module.exports = env => {
   let devtool = 'eval';
   let mode = 'development';
   let stats = 'minimal';
-  let plugins = [
+  const plugins = [
     new webpack.DefinePlugin({
       __ENV__: JSON.stringify(env.NODE_ENV)
     })
@@ -37,11 +36,7 @@ module.exports = env => {
   console.log(`    - nodeModulesPath: ${nodeModulesPath}`);
 
   return {
-    // Here the application starts executing
-    // and webpack starts bundling
-    entry: [
-      entry
-    ],
+    entry: [path.join(__dirname, 'src/app.js')],
 
     // options related to how webpack emits results
     output: {
@@ -56,27 +51,13 @@ module.exports = env => {
 
     // Webpack 4 mode helper
     mode,
-
-    // configuration regarding modules
     module: {
-      // rules for modules (configure loaders, parser options, etc.)
       rules: [
         {
-          // these are matching conditions, each accepting a regular expression or string
-          // test and include have the same behavior, both must be matched
-          // exclude must not be matched (takes preference over test and include)
-          // Best practices:
-          // - Use RegExp only in test and for filename matching
-          // - Use arrays of absolute paths in include and exclude
-          // - Try to avoid exclude and prefer include
           test: /\.js?$/,
-          // the loader which should be applied, it'll be resolved relative to the context
-          // -loader suffix is no longer optional in webpack2 for clarity reasons
-          // see webpack 1 upgrade guide
           use: {
             loader: 'babel-loader',
           },
-          include: includePath,
           exclude: nodeModulesPath,
         },
         {
@@ -85,8 +66,6 @@ module.exports = env => {
             {
               loader: MiniCssExtractPlugin.loader,
               options: {
-                // you can specify a publicPath here
-                // by default it use publicPath in webpackOptions.output
                 publicPath: 'css'
               }
             },
@@ -97,11 +76,7 @@ module.exports = env => {
         }
       ]
     },
-
-    // options for resolving module requests
-    // (does not apply to resolving to loaders)
     resolve: {
-      // directories where to look for modules,
       modules: [
         'node_modules',
         path.resolve(__dirname, 'src')
@@ -114,16 +89,12 @@ module.exports = env => {
     performance: {
       hints: 'warning'
     },
-
-    // lets you precisely control what bundle information gets displayed
     stats,
-
-    // enhance debugging by adding meta info for the browser devtools
-    // source-map most detailed at the expense of build speed.
     devtool,
-
     devServer: {
-      contentBase: 'build'
+      contentBase: path.resolve(__dirname, 'build'),
+      port: 3000,
+      host: '0.0.0.0'
     },
 
     plugins: plugins.concat(
