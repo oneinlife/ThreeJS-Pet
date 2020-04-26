@@ -1,7 +1,5 @@
 import * as THREE from 'three';
-
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-
 import Material from '../helpers/material';
 import MeshHelper from '../helpers/meshHelper';
 import Helpers from '../../utils/helpers';
@@ -14,7 +12,7 @@ export default class Model {
     this.textures = textures;
 
     // Manager is passed in to loader to determine when loading done in main
-    this.loader = new GLTFLoader();
+    this.loader = new GLTFLoader(manager);
     this.obj = null;
   }
 
@@ -22,8 +20,9 @@ export default class Model {
     // Load model with ObjectLoader
     this.loader.load(
       Config.model.path,
-      obj => {
-        obj.scene(child => {
+      ({ scene: { children } }) => {
+        const obj =  children[0];
+        obj.traverse(child => {
           if(child instanceof THREE.Mesh) {
             // Create material for mesh and set its map to texture by name from preloaded textures
             const material = new Material(0xffffff).standard;

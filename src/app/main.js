@@ -98,11 +98,84 @@ export default class Main {
       };
     });
 
+    this.keys = {
+      'W': false,
+      'A': false,
+      'S': false,
+      'D': false,
+    }
+
+    window.addEventListener("keydown", this.onKeyDown.bind(this), false);
+    window.addEventListener("keyup",  this.onKeyUp.bind(this), false);
+    this.quaternion = new THREE.Quaternion();
     // Start render which does not wait for model fully loaded
     this.render();
   }
 
-  render() {
+  onKeyUp(event) {
+    var keyCode = event.keyCode;
+  
+    switch (keyCode) {
+      case 68: //d
+        this.keys.D = false;
+        break;
+      case 83: //s
+        this.keys.S = false;
+        break;
+      case 65: //a
+        this.keys.A = false;
+        break;
+      case 87: //w
+        this.keys.W = false;
+        break;
+    }
+  }
+
+  onKeyDown(event) {
+    var keyCode = event.keyCode;
+    switch (keyCode) {
+      case 68: //d
+        this.keys.D = true;
+        break;
+      case 83: //s
+        this.keys.S = true;
+        break;
+      case 65: //a
+        this.keys.A = true;
+        break;
+      case 87: //w
+        this.keys.W = true;
+        break;
+    }
+  }
+
+  
+
+  renderSphere(sphere, time) {
+    const length = time/10000;
+    const angul = (length)/(Math.PI*5);
+
+    if (this.keys.D) {
+      this.quaternion.setFromAxisAngle(new THREE.Vector3(0, 0, 1).normalize(), -angul);
+      sphere.applyQuaternion(this.quaternion);
+      sphere.position.x += length;
+    } else if (this.keys.S) {
+      this.quaternion.setFromAxisAngle(new THREE.Vector3(1, 0, 0).normalize(), angul);
+      sphere.applyQuaternion(this.quaternion);
+      sphere.position.z += length;
+    } else if (this.keys.A) {
+      this.quaternion.setFromAxisAngle(new THREE.Vector3(0, 0, 1).normalize(), angul);
+      sphere.applyQuaternion(this.quaternion);
+      sphere.position.x -= length;
+    } else if (this.keys.W) {
+      this.quaternion.setFromAxisAngle(new THREE.Vector3(1, 0, 0).normalize(), -angul);
+      sphere.applyQuaternion(this.quaternion);
+      sphere.position.z -= length;
+    }
+    
+  }
+
+  render(time = 0) {
     // Render rStats if Dev
     if(Config.isDev && Config.isShowingStats) {
       Stats.start();
@@ -122,7 +195,7 @@ export default class Main {
     // Call any vendor or module frame updates here
     TWEEN.update();
     this.controls.threeControls.update();
-
+    this.model && this.model.obj && this.renderSphere(this.model.obj, time);
     // RAF
     requestAnimationFrame(this.render.bind(this)); // Bind the main class instead of window object
   }
