@@ -19,7 +19,7 @@
   "dependencies": {
     "es6-promise": "^4.2.8",
     "express": "^4.17.1",
-    "three": "^0.100.0",
+    "three": "^0.115.0",
     "tween.js": "^16.6.0"
   },
   "devDependencies": {

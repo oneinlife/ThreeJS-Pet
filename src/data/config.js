@@ -14,7 +14,7 @@ export default {
   easing: TWEEN.Easing.Quadratic.InOut,
   duration: 500,
   model: {
-    path: './assets/models/Teapot.json',
+    path: './assets/models/sphere.glb',
     scale: 20
   },
   texture: {
@@ -28,7 +28,7 @@ export default {
     wireframe: false,
     translucent: false,
     material: {
-      color: 0xffffff,
+      color: 0xf0f0f0,
       emissive: 0xffffff
     }
   },
